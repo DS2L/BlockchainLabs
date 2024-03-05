@@ -10,12 +10,12 @@ You will use `remix`, a web-based IDE for solidity development, including writin
 To write a Solidity program, you have to have an account payable, which is used as the constructor. Otherwise, you will not be able to make deposits/transfers. 
 
 
-| Exercises | Points | CS student | Finance student
+| Exercises | Points | CS undergraduate student | CS graduate student
 | --- | --- | --- | --- |
 |  1  | 15 |  Required | Required |
-|  2  | 25 | Required | Bonus |
+|  2  | 25 | Required | Required |
 |  3  | 25 | Required | Required |
-|  4  | 35 | Required | Bonus |
+|  4  | 35 | Bonus | Required |
 |  5  | 20 | Bonus | Bonus |
 
 Exercise 1: Execute the hello-world SC
