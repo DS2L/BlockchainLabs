@@ -15,8 +15,8 @@ To write a Solidity program, you have to have an account payable, which is used 
 |  1  | 15 |  Required | Required |
 |  2  | 25 | Required | Required |
 |  3  | 25 | Required | Required |
-|  4  | 35 | Bonus | Required |
-|  5  | 20 | Bonus | Bonus |
+|  4  | 35 | Required | Required |
+|  5  | 20 | Bonus | Required |
 
 Exercise 1: Execute the hello-world SC
 ---
