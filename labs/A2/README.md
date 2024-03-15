@@ -48,7 +48,9 @@ Exercise 2: Write SC to output bigger number
 In this exercise, you are asked to write a Solidity program to find the maximum of two values, $x$ and $y$, and return that value. The Smart contact should have the following functionalities:
 
 1. A function that takes integers $x$ and $y$ as input
-2. Returns the bigger integer between  $x$ and $y$ as output. Deploy and run the program in Remix [[link](https://remix.ethereum.org/)]
+2. Returns the bigger integer between  $x$ and $y$ as output. Deploy and run the program in Remix [[link](https://remix.ethereum.org/)].
+
+You need to test your program with at least three cases, including $x$ < $y$, $x$ = $y$, and $x$ > $y$.
 
 Exercise 3: Execute SC for single-account Ether bank 
 ---
@@ -123,6 +125,7 @@ Extend your solution in Exercise 4 to realize the following functionality:
 
 Hint: You should consider two cases: 1) `Charlie` sends a basic Ethereum transaction that calls no function in `bank_m`. 2) `Charlie` sends a transaction to externally call the `deposit()` function in `bank_m` explicitly. 
 
+<!--
 Exercise 5': Ether bank under unknown deposit
 ---
 
@@ -131,7 +134,7 @@ Extend your solution in Exercise 4 to realize the following functionality:
 - When account `Charlie` transfers $z$ Ether to the bank, the bank keeps half (i.e., $\frac{z}{2}$ Ether) to itself and returns the other half to `Charlie`.
 
 Hint: You should consider two cases: 1) `Charlie` sends a basic Ethereum transaction that calls no function in `bank_m`. 2) `Charlie` sends a transaction to externally call the `deposit()` function in `bank_m` explicitly. 
-
+-->
 
 
 <!--
