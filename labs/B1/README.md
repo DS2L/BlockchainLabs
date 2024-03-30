@@ -26,9 +26,11 @@ For your interest, we also provide a challenge exercise 7 on this [[page](refund
 Exercise 1. Execute ERC20 token transfer
 ---
 
-The following smart contract implements a very simple token supporting the essential transfer function: `transfer(address sender, address recipient, uint256 amount)` 
+The following smart contract implements a very simple token supporting the essential transfer function: `transfer(address recipient, uint256 amount)` 
 
 ```
+// SPDX-License-Identifier: BADD Labs
+
 pragma solidity >=0.7.0 <0.9.0; 
 contract BaddToken {  
   uint _totalSupply = 0; string _symbol;  
@@ -58,9 +60,9 @@ Exercise 2. Extend `BaddToken` with approve/transferFrom
 ---
 
 ```
-function approve(address spender, uint256 amount) external returns (bool);
-function transferFrom(address from, address to, uint256 amount) external returns (bool);
-function allowance(address owner, address spender) external view returns (uint256);
+function approve(address spender, uint256 amount) external returns (bool)
+function transferFrom(address from, address to, uint256 amount) external returns (bool)
+function allowance(address owner, address spender) external view returns (uint256)
 ```
 
 Your job is to extend the `BaddToken` with the `approve` and `transferFrom` functions defined as above. For example, suppose owner Alice wants to transfer 1 `BaddToken` to another account Bob, through an intermediary Charlie. Alice first calls `approve(Charlie,1)` which gives Charlie an allowance of 1 `BaddToken`. Here, allowance is the amount of the tokens original owner Alice delegate to a third-party spender account Charlie, so that Charlie can spend them on behalf of Alice. Then, Charlie calls the function `transferFrom(Alice,Bob,1)`, through which Bob's balance is credited by 1 `BaddToken` and Alice's balance is debited by 1 `BaddToken`.
