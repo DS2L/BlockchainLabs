@@ -61,8 +61,8 @@ Exercise 2. Extend `BaddToken` with approve/transferFrom
 
 ```
 function approve(address spender, uint256 amount) external returns (bool)
-function transferFrom(address from, address to, uint256 amount) external returns (bool)
 function allowance(address owner, address spender) external view returns (uint256)
+function transferFrom(address from, address to, uint256 amount) external returns (bool)
 ```
 
 Your job is to extend the `BaddToken` with the `approve` and `transferFrom` functions defined as above. For example, suppose owner Alice wants to transfer 1 `BaddToken` to another account Bob, through an intermediary Charlie. Alice first calls `approve(Charlie,1)` which gives Charlie an allowance of 1 `BaddToken`. Here, allowance is the amount of the tokens original owner Alice delegate to a third-party spender account Charlie, so that Charlie can spend them on behalf of Alice. Then, Charlie calls the function `transferFrom(Alice,Bob,1)`, through which Bob's balance is credited by 1 `BaddToken` and Alice's balance is debited by 1 `BaddToken`.
@@ -89,6 +89,8 @@ In Step 1, trader Alice approves $x$ units of `TokenX` from her account (EOA) to
 In this exercise, you can consider that $dy/dx = 2$. Implement the AMM smart contract using the following interface.
 
 ```
+// SPDX-License-Identifier: BADD Labs
+
 pragma solidity >=0.7.0 <0.9.0; 
 contract AMMPool {
   BaddToken tokenX;
