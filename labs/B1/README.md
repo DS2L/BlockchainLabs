@@ -51,6 +51,7 @@ contract BaddToken {
 
 Your job in this exercise is to deploy the above `BaddToken` SC and create a Token instance, say `TokenX`. Then, demonstrate the process that the `TokenX` issuer transfers 10 `TokenX` to another account, say Alice, and display each account's balance before/after the transfer.
 
+**Submission guideline:** You should take screenshots to show the balance of each account before and after the token transfer.  
 
 Exercise 2. Extend `BaddToken` with approve/transferFrom
 ---
@@ -61,7 +62,7 @@ function allowance(address owner, address spender) external view returns (uint25
 function transferFrom(address from, address to, uint256 amount) external returns (bool)
 ```
 
-Your job is to extend the `BaddToken` with the `approve` and `transferFrom` functions defined as above. For example, suppose owner Alice wants to transfer 1 `BaddToken` to another account Bob, through an intermediary Charlie. Alice first calls `approve(Charlie,1)` which gives Charlie an allowance of 1 `BaddToken`. Here, allowance is the amount of the tokens original owner Alice delegate to a third-party spender account Charlie, so that Charlie can spend them on behalf of Alice. Then, Charlie calls the function `transferFrom(Alice,Bob,1)`, through which Bob's balance is credited by 1 `BaddToken` and Alice's balance is debited by 1 `BaddToken`.
+Your job is to extend the `BaddToken` with the `approve` and `transferFrom` functions defined above. For example, suppose owner Alice wants to transfer 1 `BaddToken` to another account Bob, through an intermediary Charlie. Alice first calls `approve(Charlie,1)` which gives Charlie an allowance of 1 `BaddToken`. Here, allowance is the amount of the tokens original owner Alice delegate to a third-party spender account Charlie, so that Charlie can spend them on behalf of Alice. Then, Charlie calls the function `transferFrom(Alice,Bob,1)`, through which Bob's balance is credited by 1 `BaddToken` and Alice's balance is debited by 1 `BaddToken`.
 
 Deploy the extended `BaddToken` SC in Remix. We use the following table to test/grade if your deployed token SC is correct. For instance, we may send a sequence of transaction against the instances of your `BaddToken`: `A.approve(C,1)`, `balanceOf(A)`, `allowance(A,C)`, `balanceOf(B)`, `C.transferFrom(A,B,1)`, `balanceOf(B)`. If your SC is correct, we expect the transaction returns the following: ...,`balanceOf(A)=1`, `allowance(A,C)=1`, `balanceOf(B)=0`,...,`balanceOf(B)=1`.
 
