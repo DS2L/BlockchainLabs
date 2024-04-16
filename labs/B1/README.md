@@ -19,8 +19,6 @@ In this lab, you will write smart contracts to implement your own version of Uni
 |  5  | 40 | Required | Bonus |
 |  6  | 20 | Required | Bonus |
 
-For your interest, we also provide a challenge exercise 7 on this [[page](refund.md)]. Exercise 7 will not be graded and we will not provide solutions as it can be open-ended. 
-
 Exercise 1. Execute ERC20 token transfer
 ---
 
