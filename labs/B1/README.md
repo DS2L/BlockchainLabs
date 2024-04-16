@@ -1,18 +1,16 @@
-Lab B1: AMM DEX ("Build-your-own-Uniswap" Lab)
+Lab 3: AMM DEX ("Build-your-own-Uniswap" Lab)
 ===
 
 Introduction
 ---
 
-In today's DEX market, Uniswap is the most popular service at all-time. The DEX market distribution on Ethereum can be seen in the following screenshot from https://etherscan.io/stat/dextracker.
+In today's DEX market, Uniswap is the most popular service at all time. The DEX market distribution on Ethereum can be seen in the following screenshot from https://etherscan.io/stat/dextracker.
 
 ![DEX market](dex-market-uniswapv2.png)
 
-In this lab, you will write smart contracts to implement your own version of Uniswap V3. Uniswap adopts the automated market maker (AMM) protocol in which a trader trades directly with a smart-contract intermediary called pool. This is unlike other DEX designs like order books. Besides Uniswap V3, AMM is also adopted in other popular services, including Uniswap V2, Sushiswap, Pancakeswap, etc.
+In this lab, you will write smart contracts to implement your own version of Uniswap V3. Uniswap adopts the automated market maker (AMM) protocol in which a trader trades directly with a smart-contract intermediary called pool. This is unlike other DEX designs like order books. Besides Uniswap V3, AMM has also been adopted in other popular services, including Uniswap V2, Sushiswap, Pancakeswap, etc.
 
-We provide companion slides to introduce more background on AMM: https://www.dropbox.com/s/8749eybqaw67afd/3.DeFi-LabB1.pdf?dl=0
-
-| Tasks | Points | CS student | Finance student |
+| Tasks | Points | Undergraduate student | Master student |
 | --- | --- | --- | --- |
 |  1  | 10 | Required | Required |
 |  2  | 20 | Required | Required |
