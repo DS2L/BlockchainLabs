@@ -14,10 +14,9 @@ In this lab, you will write smart contracts to implement your own version of Uni
 | --- | --- | --- | --- |
 |  1  | 10 | Required | Required |
 |  2  | 20 | Required | Required |
-|  3  | 40 | Required | Required |
-|  4  | 40 | Bonus    | Bonus |
-|  5  | 40 | Required | Bonus |
-|  6  | 20 | Required | Bonus |
+|  3  | 30 | Required | Required |
+|  4  | 40 | Required | Required |
+|  5  | 10 | Bonus    | Required |
 
 Exercise 1. Execute ERC20 token transfer
 ---
@@ -72,7 +71,9 @@ Deploy the extended `BaddToken` SC in Remix. We use the following table to test/
 | `A.approve(C,1)` | 1 | 0 | 1 |
 | `C.transferFrom(A,B,1)` | 0 | 1 | 0 |
 
-Hint: You can use nested mapping to store the allowance information.
+Hint: You can use nested mapping to store the allowance information, such as `mapping(address account => mapping(address spender => uint256)) private allowances;`. Then you can read or update it with `allowances[owner][spender]`.
+
+**Submission guideline:** You need to submit the smart contract code, which is a solidity file, and name it "exercise2.sol". You also need to take screenshots for each step of the program execution. 
 
 Exercise 3. AMM Design with Fixed Rate
 ---
@@ -124,28 +125,9 @@ We will test your pool SC using the following test cases. `P` is the Pool CA, `X
 | `A.approve(P,1)` | 1 | 0 | 1 | 0 | 2 |
 | `A.swapXY(1)` | 0 | 1 | 0 | 2 | 0 |
 
-Exercise 4. Security Analysis 
----
+**Submission guideline:** You need to submit the smart contract code, which is a solidity file, and name it "exercise3.sol". You also need to take screenshots for each step of the program execution. 
 
-Now consider a thief `Bob` who inserts withdrawal (i.e., `swapXY` call) without making deposit. Here, there are two approaches of committing the theft: First, the thief `Bob` simply calls `swapXY` function without calling `approve`. Demonstrate your solution in Exercise 3 will produce the following test result. You may or may not need update your solution in Exercise 3. 
-
-- Note that the test case below means to run the following sequence of function calls: `X.balanceOf(B)`,`X.balanceOf(P)`,`X.allowance(B,P)`,`Y.balanceOf(B)`,`Y.balanceOf(P)`,`B.swapXY(1)`,`X.balanceOf(B)`,`X.balanceOf(P)`,`X.allowance(B,P)`,`Y.balanceOf(B)`,`Y.balanceOf(P)` . Again, `P` is the Pool CA, `X` is `TokenX` and `Y` is `TokenY`.
-
-| Calls | `X.balanceOf(B)` | `X.balanceOf(P)` | `X.allowance(B,P)` | `Y.balanceOf(B)` | `Y.balanceOf(P)` |
-| --- | --- | --- | --- | ---- | --- |
-| Init state    | 1 | 0 | 0 | 0 | 2 |
-| `B.swapXY(1)` | 1 | 0 | 0 | 0 | 2 |
-
-Second, a thief `Bob` observes another account say `Alice`'s deposit and sends his withdrawal transaction to be ordered before her withdrawal transaction (an adversarial behavior called frontrunning attacks). Demonstrate your solution in Exercise 3 will produce the following test result (with security against frontrunning). You may or may not need update your solution in Exercise 3.
-
-| Calls | `X.balanceOf(A)` | `X.balanceOf(B)` | `X.balanceOf(P)` | `X.allowance(A,P)` | `Y.balanceOf(A)` | `Y.balanceOf(B)` | `Y.balanceOf(P)` |
-| --- | --- | --- | --- | ---- | --- | --- | --- |
-| Init state        | 1 | 0 | 0 | 0 | 0 | 0 | 2 | 
-| `A.approve(P,1)`  | 1 | 0 | 0 | 1 | 0 | 0 | 2 |
-| `B.swapXY(1)`     | 1 | 0 | 0 | 1 | 0 | 0 | 2 | 
-| `A.swapXY(1)`     | 0 | 0 | 1 | 0 | 2 | 0 | 0 | 
-
-Exercise 5. Constant-product AMM
+Exercise 4. Constant-product AMM
 ---
 
 Suppose the AMM account owns $x$ units of `TokenX` and $y$ units of `TokenY`. The AMM pool can use a function $f(x,y)$ to calculate the exchange rate between `TokenX` and `TokenY` on the fly. Specifically, it enforces that function value is constant before and after each token swap, that is,
@@ -158,17 +140,18 @@ In this exercise, you will extend your solution in Exercise 3 to implement const
 
 We will test your solution using the following test case:
 
-
 | Calls | `X.balanceOf(A)` | `X.balanceOf(P)` | `X.allowance(A,P)` | `Y.balanceOf(A)` | `Y.balanceOf(P)` |
 | --- | --- | --- | --- | ---- | --- |
 | Init state  | 1 | 1 | 0 | 0 | 4 |
 | `A.approve(P,1)` | 1 | 1 | 1 | 0 | 4 |
 | `A.swapXY(1)` | 0 | 2 | 0 | 2 | 2 |
 
-Exercise 6. Undo `approve` upon Standalone Deposit 
+**Submission guideline:** You need to submit the smart contract code, which is a solidity file, and name it "exercise4.sol". You also need to take screenshots for each step of the program execution. 
+
+Exercise 5. Undo `approve` upon Standalone Deposit 
 ---
 
-In Exercise 5, consider an Alice who called `approve` function (the Deposit step) but did not call `swapXY` (the Withdrawal step). This is possibly due to that Alice changes her mind after the deposit and wants to undo it.
+In Exercise 4, consider Alice, who called the `approve` function (the Deposit step) but did not call the `swapXY` (the Withdrawal step). This is possibly due to that Alice changes her mind after the deposit and wants to undo it.
 
 Extend your pool SC from the previous exercises to support undo `approve` and to revert a trade-in-progress. You may want to implement a function in the AMM pool, say `undo_approve()`. After Step 1 and calling `undo_approve()`, Alice will have her original balance in `TokenX` and zero allowance to the pool. That is (`P` is the Pool CA):
 
@@ -178,9 +161,11 @@ Extend your pool SC from the previous exercises to support undo `approve` and to
 | `A.approve(P,1)` | 1 | 0 | 1 |
 | `A.undo_approve()` | 1 | 0 | 0 |
 
+**Submission guideline:** You need to submit the smart contract code, which is a solidity file, and name it "exercise5.sol". You also need to take screenshots for each step of the program execution. 
 
-Deliverable
+Deliverables
 ---
-
-- For all tasks, you should 1) submit your smart-contract code, and 2) show the screenshot of the program execution. 
+You should submit one document and 4 solidity code files.
+- For exercise 1, you should include the screenshot of the program execution in the document.
+- For exercise 2-5, you should include the screenshots showing the program execution in the document. You also need to submit the solidity code developed by you.
 
