@@ -73,7 +73,7 @@ mkdir -p ~/lab1/bkc_data
 cd ~/lab1
 gedit genesis.json
 ```
-Copy this online file [[link](https://github.com/DS2L/BlockchainLabs/blob/master/lab1/genesis.json)] to the `gedit` and save it (by hitting `control+S` in Ubuntu).
+Copy this online file [[link](https://github.com/DS2L/BlockchainLabs/blob/master/mining_lab/genesis.json)] to the `gedit` and save it (by hitting `control+S` in Ubuntu).
 
 **_Script 2.2_**: 
 ```
