@@ -6,15 +6,15 @@ Introduction
 
 Etherscan (https://etherscan.io/) provides a web service to explore Ethereum transactions and blocks. In this lab, you will retrieve and analyze Ethereum transaction history on etherscan by interacting with this website. Particularly, you will extract insights on transaction fees.
 
-| Exercises | Points | Graduate student |  Undergraduate student
-| --- | --- | --- | --- |
-|  1  | 10 |  Required | Required |
-|  2  | 10 | Required | Required |
-|  3  | 10 | Required | Required |
-|  4  | 20 | Required | Required |
-|  5  | 30 | Required | Required |
-|  6  | 20 | Required | Required |
-|  7  | 10 | Required | Bonus |
+| Exercises  | Graduate student (Points) |  Undergraduate student (Points)
+| --- | --- | --- |
+|  1  | Required (10) | Required (10) |
+|  2  | Required (10) | Required (10) | 
+|  3  | Required (10) | Required (10) |
+|  4  | Required (20) | Required (20) |
+|  5  | Required (20) | Required (30) |
+|  6  | Required (20) | Required (20) |
+|  7  | Required (10) | Bonus    (10) |
 
 Exercise 1. Manually explore three transactions
 ---
