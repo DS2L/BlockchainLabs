@@ -37,7 +37,7 @@ Exercise 3. Manually explore two blocks
 
 Find the last transaction in block `15479087` and the first transaction in block `15479088`. Report the average fees of these two transactions.
 
-- Hint: Assume the first transaction in a block is listed as the first row on the first page under that block on etherscan.io. Likewise, the last transaction in a block is listed as the last row on the last page under that block on etherscan.io.
+- Hint: Assume the first transaction in a block is listed as the last row on the last page under that block on etherscan.io. Likewise, the last transaction in a block is listed as the first row on the first page under that block on etherscan.io.
 
 Exercise 4. Automatically explore 50 transactions in one block
 ---
