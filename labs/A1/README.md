@@ -135,7 +135,7 @@ if __name__ == "__main__":  # entrance to the main function
     scrape_block(15479087, 1)
 ```
 
-In this exercise, you will run a python code to crawl data from the etherscan website automatically. The example code above crawls the etherscan web page  (i.e., https://etherscan.io/txs?block=15479087) to read the first 50 transactions in block `15479087`.
+In this exercise, you will run a python code to crawl data from the etherscan website automatically. The example code above crawls the etherscan web page  (i.e., https://etherscan.io/txs?block=15479087) to read the last 50 transactions in block `15479087`.
 
 To run the python code, you will need a Python runtime and some libraries. If your computer does not support Python (yet), you can find installation instructions on
 https://www.python.org/downloads/ for both Windows and Mac machines. In addition, the Python libraries can be installed in a Python console: 
@@ -157,7 +157,7 @@ In this exercise, you are required to report the average fee of all transactions
 Exercise 6. Automatically explore transactions across two blocks
 ---
 
-In this exercise, you are required to report the average fees of 100 transactions, which are the first 50 transactions in block `15479087` and the first 50 transactions in block `15479088`. You can modify the given code.
+In this exercise, you are required to report the average fees of 100 transactions, which are the first 50 transactions in block `15479087` and the first 50 transactions in block `15479088`. You need to modify the given code.
 
 Exercise 7 (Additional). Automatically explore contract-calling transactions in one block
 ---
