@@ -50,6 +50,8 @@ contract BaddToken {
 
 Your job in this exercise is to deploy the above `BaddToken` SC and create a Token instance, say `TokenX`. Then, demonstrate the process that the `TokenX` issuer transfers 10 `TokenX` to another account, say Alice, and display each account's balance before/after the transfer.
 
+**Note:** If you cannot deploy the above token contract on Remix due to an error of "invalid opcode", you may need to select the compiler version of "0.8.19+commit" in the compilation step and then select the environment of "Remix VM (Shanghai)" in the Deploy & Run step.
+
 **Submission guideline:** You should take screenshots to show the balance of each account before and after the token transfer.  
 
 Exercise 2. Extend `BaddToken` with approve/transferFrom
