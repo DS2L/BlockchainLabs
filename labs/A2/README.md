@@ -64,7 +64,7 @@ contract bank {
   }
   function withdraw(uint256 ethers) public payable {
     msg.sender.transfer(ethers * 1000000000000000000);
-    EtherBalance_Alice = EtherBalance_Alice - ethers;
+    EtherBalance_Alice = EtherBalance_Alice - ethers*1000000000000000000;
   }
   function relay(address Bob) public payable {
      Bob.transfer(msg.value);
