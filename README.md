@@ -37,5 +37,5 @@ Category B: DeFi & Security
 
 Acknowledgement
 ---
-Dr. Yuzhe Tang's team at Syracuse University (https://github.com/badd-labs/badd-labs)
+The Labs are adapted from Dr. Yuzhe Tang's team at Syracuse University (https://github.com/badd-labs/badd-labs)
 
