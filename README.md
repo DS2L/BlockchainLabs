@@ -16,9 +16,9 @@ In particular,  through our labs, you will gain hands-on experience on the follo
 
 Category A: Blockchain Basics
 ---
-- *Lab A1. Mining in a private network* [[link](mining_lab/README.md)] 
-- *Lab A2. Transaction exploration* [[link](labs/A1/README.md)] 
-- *Lab A3. Smart-contract programming* [[link](labs/A2/README.md)]
+- *Lab A0. Mining in a private network* [[link](mining_lab/README.md)] 
+- *Lab A1. Transaction exploration* [[link](labs/A1/README.md)] 
+- *Lab A2. Smart-contract programming* [[link](labs/A2/README.md)]
 <!--
 - Lab A3. Blockchain mining [[link](labs/A3/README.md)]
 -->
