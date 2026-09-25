@@ -42,6 +42,8 @@ Find the last transaction in block `15479087` and the first transaction in block
 Exercise 4. Automatically explore 50 transactions in one block
 ---
 
+Note: the following code may need additional tweaks due to the changed API or response structure of etherscan.io.
+
 ```python
 import requests
 from time import sleep
