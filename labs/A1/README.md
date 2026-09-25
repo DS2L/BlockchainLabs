@@ -42,104 +42,136 @@ Find the last transaction in block `15479087` and the first transaction in block
 Exercise 4. Automatically explore 50 transactions in one block
 ---
 
-Note: the following code may need additional tweaks due to the changed API or response structure of etherscan.io.
+Note: the following code may take a few minutes to complete, and sometimes may need additional tweaks due to the changed API or response structure of etherscan.io. 
 
 ```python
+import os
+import threading
+import time
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
+
 import requests
-from time import sleep
-from bs4 import BeautifulSoup
-import re
 
-pattern = r'0x[a-fA-F0-9]{40}'
+API_URL = "https://api.etherscan.io/v2/api"
+API_KEY = "CHX8WJARQ571B9JFT3D5NFWERZGN7KQ9JN" # or request your own on https://etherscan.io/myapikey 
+CHAIN_ID = 1          # 1 mainnet, 11155111 sepolia, 8453 base, 42161 arbitrum
+WEI = 10**18
 
+TX_TYPES = {0: "Legacy", 1: "Access List", 2: "Dynamic Fee", 3: "Blob", 4: "Set Code"}
 
-def scrape_block(blocknumber, page):
-    # the URL of the web page that we want to get transaction data
-    api_url = "https://etherscan.io/txs?block=" + str(blocknumber) + "&p=" + str(page)
-    # HTTP headers used to send a HTTP request
-    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:72.0) Gecko/20100101 Firefox/72.0'}
-    # Pauses for 0.5 seconds before sending the next request
-    sleep(0.5)
-    # send the request to get data in the webpage
-    response = requests.get(api_url, headers=headers)
-    # get the transaction table from the response data we get
-    txs = BeautifulSoup(response.content, 'html.parser').select('table.table-hover tbody tr')
-    for row in txs:
-        tx = extract_transaction_info(row)
-        print("transaction of ID:", tx['hash'], "block:", tx['block'], "from address", tx['from'], "toaddress", tx['to'], "transaction fee", tx['fee'])
+# The free tier allows 5 requests/second. One shared throttle keeps the worker
+# threads below that ceiling no matter how many of them are running.
+_rate_lock = threading.Lock()
+_next_call_at = 0.0
 
 
-def extract_transaction_info(tr_element):
-    try:
-        # Extract transaction hash
-        tx_hash = tr_element.select_one('.myFnExpandBox_searchVal').text.strip()
+def _throttle(min_gap=0.5):
+    global _next_call_at
+    with _rate_lock:
+        now = time.monotonic()
+        wait = _next_call_at - now
+        _next_call_at = max(now, _next_call_at) + min_gap
+    if wait > 0:
+        time.sleep(wait)
 
-        # Extract transaction type
-        tx_type = tr_element.select_one('span[data-title]').text.strip()
 
-        # Extract block number
-        block = tr_element.select_one('td:nth-child(4) a').text.strip()
+def _get(**params):
+    """One call to Etherscan's proxy module, which mirrors Ethereum JSON-RPC."""
+    params.update(chainid=CHAIN_ID, module="proxy", apikey=API_KEY)
+    _throttle()
+    response = requests.get(API_URL, params=params, timeout=30)
+    response.raise_for_status()
+    body = response.json()
 
-        # Extract timestamp
-        timestamp = tr_element.select_one('td.showAge span')['data-bs-title']
+    if "error" in body:
+        raise RuntimeError(body["error"].get("message", body["error"]))
+    # A bad key, an exhausted quota or an endpoint outside your plan arrives as
+    # HTTP 200 with status "0", so it has to be checked separately.
+    if str(body.get("status")) == "0":
+        raise RuntimeError(body.get("result") or body.get("message"))
+    return body.get("result")
 
-        # Extract from address
-        from_element = tr_element.select_one('td:nth-child(8) a')
-        from_addr = tr_element.select_one('td:nth-child(8) a').text.strip()
-        if 'data-bs-title' in from_element.attrs:
-            from_full = from_element['data-bs-title']
-        else:
-            # Try to get from span if <a> doesn't have it
-            from_span = from_element.select_one('span[data-bs-title]')
-            from_full = from_span['data-bs-title'] if from_span else from_addr
-        from_address = re.search(pattern, from_full).group()
 
-        # Extract to address
-        to_element = tr_element.select_one('td:nth-child(10) a')
-        to_addr = to_element.text.strip()
-        # to_full = to_element['data-bs-title'] if 'data-bs-title' in to_element.attrs else to_addr
-        if 'data-bs-title' in to_element.attrs:
-            to_full = to_element['data-bs-title']
-        else:
-            # Try to get from span if <a> doesn't have it
-            to_span = to_element.select_one('span[data-bs-title]')
-            to_full = to_span['data-bs-title'] if to_span else to_addr
-        to_address = re.search(pattern, to_full).group()
+def scrape_block(blocknumber, page=1, with_fees=True):
+    """`page` is accepted so existing calls keep working, but it is ignored:
+    one request returns every transaction in the block, so there is nothing
+    left to paginate."""
+    if not API_KEY:
+        raise SystemExit(
+            "Set ETHERSCAN_API_KEY first -- free key at https://etherscan.io/myapikey"
+        )
 
-        # Extract value
-        value = tr_element.select_one('.td_showAmount').text
+    block = _get(action="eth_getBlockByNumber", tag=hex(blocknumber), boolean="true")
+    if block is None:
+        raise SystemExit(f"block {blocknumber} not found (beyond the chain head?)")
 
-        # Extract transaction fee
-        tx_fee = tr_element.select_one('.showTxnFee').text.strip()
+    txs = block["transactions"]
+    block_timestamp = int(block["timestamp"], 16)
 
-        # Extract gas price if available
-        gas_price = tr_element.select_one('.showGasPrice')
-        gas_price = gas_price.text.strip() if gas_price else None
+    # gasUsed lives on the receipt rather than the block, so the fee costs one
+    # extra lookup per transaction. Four workers saturate the rate limit.
+    receipts = [None] * len(txs)
+    if with_fees and txs:
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            receipts = list(
+                pool.map(
+                    lambda t: _get(action="eth_getTransactionReceipt", txhash=t["hash"]),
+                    txs,
+                )
+            )
 
-        return {
-            'hash': tx_hash,
-            'type': tx_type,
-            'block': block,
-            'timestamp': timestamp,
-            'from': from_address,
-            'to': to_address,
-            'value': value,
-            'fee': tx_fee,
-            'gas_price': gas_price
-        }
+    rows = []
+    for tx_json, receipt in zip(txs, receipts):
+        tx = extract_transaction_info(tx_json, receipt, block_timestamp)
+        rows.append(tx)
+        print("transaction of ID:", tx['hash'], "block:", tx['block'],
+              "from address", tx['from'], "toaddress", tx['to'],
+              "transaction fee", tx['fee'])
+    return rows
 
-    except Exception as e:
-        print(f"Error extracting transaction info: {e}")
-        return None
+
+def extract_transaction_info(tx, receipt=None, block_timestamp=None):
+    """Same return shape as before, built from JSON instead of table cells."""
+    receipt = receipt or {}
+
+    gas_used = int(receipt["gasUsed"], 16) if receipt.get("gasUsed") else None
+    # effectiveGasPrice appears on EIP-1559 receipts; older ones fall back to
+    # the price quoted on the transaction itself.
+    raw_price = receipt.get("effectiveGasPrice") or tx.get("gasPrice")
+    gas_price = int(raw_price, 16) if raw_price else None
+
+    fee = f"{gas_used * gas_price / WEI:.8f}" if gas_used and gas_price else "n/a"
+
+    to_address = tx.get("to")
+    if to_address is None:                       # contract creation has no `to`
+        created = receipt.get("contractAddress")
+        to_address = f"[contract created] {created}" if created else "[contract created]"
+
+    status = receipt.get("status")
+
+    return {
+        'hash': tx['hash'],
+        'type': TX_TYPES.get(int(tx.get('type', '0x0'), 16), tx.get('type')),
+        'block': int(tx['blockNumber'], 16),
+        'timestamp': datetime.fromtimestamp(block_timestamp, timezone.utc)
+                             .isoformat(timespec='seconds') if block_timestamp else None,
+        'from': tx['from'],
+        'to': to_address,
+        'value': f"{int(tx['value'], 16) / WEI:.8f}",
+        'fee': fee,
+        'gas_price': f"{gas_price / 1e9:.4f} gwei" if gas_price else None,
+        'status': {'0x1': 'success', '0x0': 'failed'}.get(status),
+    }
 
 
 if __name__ == "__main__":  # entrance to the main function
     scrape_block(15479087, 1)
 ```
 
-In this exercise, you will run a python code to crawl data from the etherscan website automatically. The example code above crawls the etherscan web page  (i.e., https://etherscan.io/txs?block=15479087) to read the last 50 transactions in block `15479087`.
+In this exercise, you will run the Python code to crawl data from the etherscan website automatically. The example code above sends requests to the Etherscan Explorer (i.e., https://etherscan.io/txs?block=15479087) to read the last 50 transactions in block `15479087`.
 
-To run the python code, you will need a Python runtime and some libraries. If your computer does not support Python (yet), you can find installation instructions on
+To run the code, you will need a Python runtime and some libraries. If your computer does not support Python (yet), you can find installation instructions on
 https://www.python.org/downloads/ for both Windows and Mac machines. In addition, the Python libraries can be installed in a Python console: 
 
 ```bash
