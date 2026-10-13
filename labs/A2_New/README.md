@@ -423,7 +423,7 @@ Two things to confirm in that output:
 | 2        |     25 | Required  | Required | `Ex2MaxTest` — 10 tests                    |
 | 3        |     25 | Required  | Required | `WRITEUP.md`: transcript + 4 answers       |
 | 4        |     35 | Required  | Required | `Ex4TwoAccountBankTest` — 15 tests         |
-| 5        |     20 | **Bonus** | Required | `Ex5GuardedBankTest` — 13 tests            |
+| 5        |     10 | **Bonus** | Required | `Ex5GuardedBankTest` — 13 tests            |
 
 **Exercises 2, 4, and 5 (80 points)** are scored by running the test suite against
 your contracts. Points are proportional to tests passed, so partial work earns
