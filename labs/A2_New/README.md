@@ -74,7 +74,7 @@ forge --version
 
 ```bash
 git clone --recurse-submodules https://github.com/DS2L/BlockchainLabs.git
-cd BlockchainLabs/labs/A2_New
+cd BlockchainLabs/labs/A2-foundry
 ```
 
 If you cloned without `--recurse-submodules`, fetch the test library:
