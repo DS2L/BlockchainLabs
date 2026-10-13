@@ -73,8 +73,8 @@ forge --version
 ### 2. Get the lab
 
 ```bash
-git clone --recurse-submodules <your-assignment-repo-url>
-cd A2
+git clone --recurse-submodules https://github.com/DS2L/BlockchainLabs
+cd BlockchainLabs/labs/A2_New
 ```
 
 If you cloned without `--recurse-submodules`:
@@ -91,7 +91,7 @@ forge test --match-contract Ex1HelloTest
 ```
 
 The first `forge build` downloads the pinned Solidity compiler (0.8.30) and takes a
-minute. After that it is fast.
+minute. After that, it is fast.
 
 You should see **5 passing tests**. If you do, your toolchain is correct and you can
 start. If you do not, see [Troubleshooting](#troubleshooting) before going further.
