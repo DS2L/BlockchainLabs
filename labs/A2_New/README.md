@@ -73,15 +73,19 @@ forge --version
 ### 2. Get the lab
 
 ```bash
-git clone --recurse-submodules https://github.com/DS2L/BlockchainLabs
+git clone --recurse-submodules https://github.com/DS2L/BlockchainLabs.git
 cd BlockchainLabs/labs/A2_New
 ```
 
-If you cloned without `--recurse-submodules`:
+If you cloned without `--recurse-submodules`, fetch the test library:
 
 ```bash
 git submodule update --init --recursive
 ```
+
+> **Run every command in this lab from `labs/A2-foundry/`.** That directory is the
+> project root — `forge` looks for `foundry.toml` in the directory you are standing
+> in, so running it from the repository root will not work.
 
 ### 3. Confirm your setup works
 
@@ -93,17 +97,17 @@ forge test --match-contract Ex1HelloTest
 The first `forge build` downloads the pinned Solidity compiler (0.8.30) and takes a
 minute. After that, it is fast.
 
-You should see **5 passing tests**. If you do, your toolchain is correct and you can
+You should see **5 passing tests**. If you do, your toolchain is correct, and you can
 start. If you do not, see [Troubleshooting](#troubleshooting) before going further.
 
 ---
 
 ## How this lab works
 
-The repository is laid out like a real Solidity project:
+The lab is laid out like a real Solidity project:
 
 ```
-A2/
+labs/A2-foundry/
 ├── src/                 ← the contracts. Your work goes here.
 │   ├── Ex1Hello.sol            given, complete — do not modify
 │   ├── Ex2Max.sol              ← you implement
@@ -367,39 +371,73 @@ implemented requirements 2 and 3, without any refund code.
 
 ## Submission
 
-Commit and push to your assignment repository:
+Submit to the **Lab A2 assignment on Canvas**. Upload exactly these four files:
 
-1. **`src/Ex2Max.sol`, `src/Ex4TwoAccountBank.sol`, `src/Ex5GuardedBank.sol`** — your
-   implementations.
-2. **`WRITEUP.md`** — the transcripts and written answers requested above.
+| File | What it is |
+| --- | --- |
+| `src/Ex2Max.sol` | your Exercise 2 implementation |
+| `src/Ex4TwoAccountBank.sol` | your Exercise 4 implementation |
+| `src/Ex5GuardedBank.sol` | your Exercise 5 implementation |
+| `WRITEUP.md` | your transcripts and written answers |
 
-Do not commit `out/`, `cache/`, or `broadcast/` — `.gitignore` already excludes them.
+Upload them as four separate files. **Keep the original filenames** — they are how
+your work gets matched to the right exercise.
 
-Before you push, run the full suite one last time from a clean state:
+> Graduate students: all four files.
+> Undergraduates: `Ex5GuardedBank.sol` is the bonus. Submit it if you attempted it,
+> skip it if you did not.
+
+### Do not submit
+
+- **The whole project folder or a zip of it.** Your three contracts are dropped into
+  a fresh copy of this lab and run against the original test suite, so `test/`,
+  `lib/`, and `foundry.toml` are not needed and will be ignored.
+- **`out/`, `cache/`, or `broadcast/`.** Build artifacts, regenerated on every build.
+
+Editing the files in `test/` changes nothing about your grade — grading always uses
+the original suite. If you want to experiment with the tests to understand them,
+go ahead; just do not expect it to count.
+
+### Before you upload
+
+Run the suite one last time from a clean state:
 
 ```bash
 forge clean && forge build && forge test
 ```
 
-If that is green, you are done. Push.
+Two things to confirm in that output:
+
+1. **It compiles.** A contract that does not compile scores zero for its exercise,
+   and `forge clean` catches the case where a stale `out/` was hiding a broken build.
+2. **The failures you see are only in exercises you chose not to attempt.** Anything
+   else is still worth fixing before you submit.
 
 ---
 
 ## Grading
 
-| Exercise | Points | Undergrad | Grad     | Graded on                             |
-| -------- | -----: | --------- | -------- | ------------------------------------- |
-| 1        |     15 | Required  | Required | `Ex1HelloTest` + transcript + answer  |
-| 2        |     25 | Required  | Required | `Ex2MaxTest` (10 tests)               |
-| 3        |     25 | Required  | Required | `Ex3BankTest` + transcript + 4 answers |
-| 4        |     35 | Required  | Required | `Ex4TwoAccountBankTest` (15 tests)    |
-| 5        |     10 | **Bonus** | Required | `Ex5GuardedBankTest` (13 tests)       |
+| Exercise | Points | Undergrad | Grad     | Graded on                                  |
+| -------- | -----: | --------- | -------- | ------------------------------------------ |
+| 1        |     15 | Required  | Required | `WRITEUP.md`: transcript + 1 answer        |
+| 2        |     25 | Required  | Required | `Ex2MaxTest` — 10 tests                    |
+| 3        |     25 | Required  | Required | `WRITEUP.md`: transcript + 4 answers       |
+| 4        |     35 | Required  | Required | `Ex4TwoAccountBankTest` — 15 tests         |
+| 5        |     20 | **Bonus** | Required | `Ex5GuardedBankTest` — 13 tests            |
 
-Within each coding exercise, points are proportional to tests passed. The write-up
-answers carry the portion of Exercises 1 and 3 that no test can check.
+**Exercises 2, 4, and 5 (80 points)** are scored by running the test suite against
+your contracts. Points are proportional to tests passed, so partial work earns
+partial credit — a solution that handles the ordinary cases but misses the extremes
+still scores.
 
-Contracts that fail to compile score zero for that exercise — `forge build` is the
-first thing the grader runs, so make sure it is the last thing you run.
+**Exercises 1 and 3 (40 points)** are scored from your write-up. You write no
+contract code for these, and their tests pass for everyone from the moment you clone
+the lab, so passing them is not evidence of anything. What is being graded is
+whether you ran the programs and understood what you saw.
+
+Contracts that fail to compile score zero for that exercise, since no test can run
+against them. `forge build` is the first thing done when grading, so make it the
+last thing you do before uploading.
 
 ---
 
@@ -442,8 +480,41 @@ for the other.
 Restart your shell, or run the `source ~/.bashrc` line that the installer printed,
 then `foundryup`.
 
+**``Error: contract source info format must be `<path>:<contractname>` or `<contractname>` ``**
+You are standing in a subdirectory such as `src/` or `test/`. `forge script`
+resolves the script path relative to your current directory, *not* to the project
+root, so `script/Ex1Deploy.s.sol` does not exist from inside `test/`. Having failed
+to find a file there, forge tries to read the argument as a contract name and gives
+up with this message.
+
+`cd` back to the lab's project root — the directory that contains `foundry.toml` —
+and re-run:
+
+```bash
+cd ~/path/to/BlockchainLabs/labs/A2-foundry
+forge script script/Ex1Deploy.s.sol --rpc-url http://127.0.0.1:8545 --broadcast
+```
+
+If you would rather not move, either form also works from any subdirectory:
+
+```bash
+forge script ../script/Ex1Deploy.s.sol --rpc-url http://127.0.0.1:8545 --broadcast
+forge script Ex1Deploy --rpc-url http://127.0.0.1:8545 --broadcast   # by contract name
+```
+
+**`Error: No such file or directory (os error 2)` or "could not find foundry.toml"**
+You are in the wrong directory. Every command must be run from
+`BlockchainLabs/labs/A2-foundry/`, not from the repository root.
+
+**`tcp connect error` / `Connection refused (os error 111)`**
+Nothing is listening on `http://127.0.0.1:8545`. Start `anvil` in a second terminal
+and leave it running, then re-run the script. Note that forge attempts the RPC
+connection *before* it resolves the script path, so this error can mask the
+directory problem above — fix the connection first, then re-read the next error.
+
 **`failed to resolve file: lib/forge-std/src/Test.sol`**
-The submodule is missing: `git submodule update --init --recursive`.
+The submodule is missing: run `git submodule update --init --recursive` from the
+repository root.
 
 **First `forge build` hangs or fails to download the compiler**
 It is fetching solc 0.8.30. On a restricted campus network this can fail. Try a
