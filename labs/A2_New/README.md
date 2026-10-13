@@ -20,7 +20,7 @@ like, before you submit.
 - [Exercise 2 — Bigger of two numbers (25 pts)](#exercise-2--bigger-of-two-numbers-25-pts)
 - [Exercise 3 — Single-account Ether bank (25 pts)](#exercise-3--single-account-ether-bank-25-pts)
 - [Exercise 4 — Two-account Ether bank (35 pts)](#exercise-4--two-account-ether-bank-35-pts)
-- [Exercise 5 — Refusing unknown deposits (20 pts)](#exercise-5--refusing-unknown-deposits-20-pts)
+- [Exercise 5 — Refusing unknown deposits (10 pts)](#exercise-5--refusing-unknown-deposits-10-pts)
 - [Submission](#submission)
 - [Grading](#grading)
 - [Solidity 0.4 → 0.8: what changed](#solidity-04--08-what-changed)
@@ -319,7 +319,7 @@ the three lines of your `withdraw` in checks-effects-interactions order.
 
 ---
 
-## Exercise 5 — Refusing unknown deposits (20 pts)
+## Exercise 5 — Refusing unknown deposits (10 pts)
 
 > Bonus for undergraduates. Required for graduate students.
 
@@ -393,7 +393,7 @@ If that is green, you are done. Push.
 | 2        |     25 | Required  | Required | `Ex2MaxTest` (10 tests)               |
 | 3        |     25 | Required  | Required | `Ex3BankTest` + transcript + 4 answers |
 | 4        |     35 | Required  | Required | `Ex4TwoAccountBankTest` (15 tests)    |
-| 5        |     20 | **Bonus** | Required | `Ex5GuardedBankTest` (13 tests)       |
+| 5        |     10 | **Bonus** | Required | `Ex5GuardedBankTest` (13 tests)       |
 
 Within each coding exercise, points are proportional to tests passed. The write-up
 answers carry the portion of Exercises 1 and 3 that no test can check.
