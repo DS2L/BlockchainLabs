@@ -1,6 +1,6 @@
  # Lab B5: Reentrancy Attacks and Defenses
 
-In a reentrancy (RE) attack, a malicious contract A interacts with a victim bank contact B to deplete the money B stores on behalf of A and other users. In this task, you will be given a vulnerable bank contract B and be required to implement a reentrancy attack contract A (Exercise 2). You will also rewrite the bank contract to B’ such that B’ is secured against reentrancy attack A (Exercise 3). Fallback is a unique function in Solidity and is a key primitive to enable reentrancy attack. You will run a given fallback contract to understand this primitive (Exercise 1).
+In a reentrancy (RE) attack, a malicious contract A interacts with a victim bank contract B to deplete the money B stores on behalf of A and other users. In this task, you will be given a vulnerable bank contract B and be required to implement a reentrancy attack contract A (Exercise 2). You will also rewrite the bank contract to B’ such that B’ is secured against reentrancy attack A (Exercise 3). Fallback is a unique function in Solidity and is a key primitive to enable reentrancy attack. You will run a given fallback contract to understand this primitive (Exercise 1).
 
 | Tasks | Points | CS student | Finance student |
 | --- | --- | --- | --- |
@@ -60,12 +60,12 @@ Exercise 3.  Design Reentrancy Defense with Implementation In Secure Bank
 
 
 - Design one or multiple defenses against reentrancy attacks in `BankRE` contract in Exercise 2.
-- Implement your new defenses in a new bank contract, say `BankSafe`, so that running the reentrancy attack (as implemented by Exercise 2 in Contract `AttackerRE`) against `BankSafe` would fail.
+- Implement your new defenses in a new bank contract, say `BankSafe`, so that running the reentrancy attack (as implemented by Exercise 2 in the contract `AttackerRE`) against `BankSafe` would fail.
 
 Exercise 4. Evasive Reentrancy Attack to Bypass Locks
 ---
 
-Locking the access to Ether-transfer instructions that may cause reentrance is a widely adopted defense strategy against reentrance attacks. The following smart contract implementing an Ether bank on a Pegged Token does use a lock to prevent the reentrance of the `burn()` function. However, the seemingly fixed contract is still vulnerable to the reentrancy attack in a general sense. Design attack contracts to attack the `EtherBankPeggedToken` smart contract so that 1) an attacker EOA can withdraw more than his account balance, and 2) an attacker EOA can deplete the Ether balance of the `EtherBankPeggedToken` contract, that is, the balance of all accounts in the contract.
+Locking access to Ether-transfer instructions that may cause reentrancy is a widely adopted defense strategy against reentrancy attacks. The following smart contract implementing an Ether bank on a Pegged Token does use a lock to prevent the reentrancy of the `burn()` function. However, the seemingly fixed contract is still vulnerable to the reentrancy attack in a general sense. Design attack contracts to attack the `EtherBankPeggedToken` smart contract so that 1) an attacker EOA can withdraw more than its account balance, and 2) an attacker EOA can deplete the Ether balance of the `EtherBankPeggedToken` contract, that is, the balance of all accounts in the contract.
 
 - The re-entered function does not have to be the same as the function it first entered.
 
