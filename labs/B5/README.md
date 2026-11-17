@@ -2,13 +2,14 @@
 
 In a reentrancy (RE) attack, a malicious contract A interacts with a victim bank contract B to deplete the money B stores on behalf of A and other users. In this task, you will be given a vulnerable bank contract B and be required to implement a reentrancy attack contract A (Exercise 2). You will also rewrite the bank contract to B’ such that B’ is secured against reentrancy attack A (Exercise 3). Fallback is a unique function in Solidity and is a key primitive to enable reentrancy attack. You will run a given fallback contract to understand this primitive (Exercise 1).
 
-| Tasks | Points | CS student | Finance student |
-| --- | --- | --- | --- |
-| 1 | 10 | Required | Required |
-| 2 | 40 | Required | Bonus |
-| 3 | 30 | Required | Bonus |
-| 4 | 20 | Bonus | Bonus |
-| 5 | 10 | Bonus | Bonus |
+| Tasks | Points | CS student |
+| --- | --- | --- |
+| 1 | 10 | Required 
+| 2 | 30 | Required
+| 3 | 30 | Required
+| 4 | 20 | Required
+| 5 | 10 | Required
+| In-class walkthrough | 50 | Required
 
 Exercise 1. Execute contract with fallback
 ---
@@ -110,4 +111,5 @@ Exercise 5. Fixing Reentrancy Attack with Lock Evasion
   
 ## Deliverable
 
-- Submit your Solidity code and the screenshot that runs the code on your computer for all exercises. The Solidity code needs to be stored in a `.sol` file in the plaintext format.
+- Submit your Solidity code and the screenshot that runs the code on your computer for all exercises. The Solidity code needs to be stored in a `.sol` file in plaintext format.
+- Following the assignment submission deadline, we will ask you to walk through your solution and demo the attack in the subsequent class.
