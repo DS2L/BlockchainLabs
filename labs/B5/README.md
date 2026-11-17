@@ -4,12 +4,12 @@ In a reentrancy (RE) attack, a malicious contract A interacts with a victim bank
 
 | Tasks | Points | CS student |
 | --- | --- | --- |
-| 1 | 10 | Required 
-| 2 | 30 | Required
-| 3 | 30 | Required
-| 4 | 20 | Required
+| 1 | 5 | Required 
+| 2 | 10 | Required
+| 3 | 20 | Required
+| 4 | 10 | Required
 | 5 | 10 | Required
-| In-class walkthrough | 50 | Required
+| In-class walkthrough | 45 | Required
 
 Exercise 1. Execute contract with fallback
 ---
@@ -112,4 +112,4 @@ Exercise 5. Fixing Reentrancy Attack with Lock Evasion
 ## Deliverable
 
 - Submit your Solidity code and the screenshot that runs the code on your computer for all exercises. The Solidity code needs to be stored in a `.sol` file in plaintext format.
-- Following the assignment submission deadline, we will ask you to walk through your solution and demo the attack in the subsequent class.
+- Following the assignment submission deadline, we will ask you to walk through your solution for Task 3 and demo the reentrancy attack in the subsequent class.
